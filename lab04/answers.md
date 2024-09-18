@@ -14,13 +14,20 @@ Consider the command you just ran: `docker run -d -p 80:80 docker/getting-starte
 
 Answer the following:
 1. Explain what the -p flag is doing (in your own words)
+`tells it which ports to use--in this case, 80:80 maps port 80 on the host (us!!) to port 80 on the container (docker).`
 2. How do you think [http://localhost](http://localhost) is communicating with Docker?
+`isn't it just a web dev tool? I know you need a specific certificate on your computer... I'd imagine it's similar to how you can open files from your system in a browser. It's related to your computer, not Docker itself. I suspect it wouldn't run if the docker application wasn't open.`
 
 ## 2. Our Application
 When you download and unzip `app`, save it inside of the `lab04` directory (while on your `lab04` branch). Then follow the instructions for this section. When you're done, answer the following questions about the `Dockerfile` you just made:
 1. What is `node:18-alpine` and where did it come from?
+`it's an image we want on our computer to start working from. If you google "computer image", you get "A computer image is a picture composed of an array of elements called pixels". This is not what we're doing!! (though I may have thought it was for a few short moments.) An image is just. a representation of a thing on your computer. It's like how I download iso files, or images of a disk, to boot a new distro on my computer. Like I guess it is just a picture of the state of something? but it's not a picture. it's just like a saved copy. idk how to explain it. And it got automatically downloaded when I ran that docker build command. `
+
 2. Which commands in the Dockerfile instructed Docker to copy the code from `app` onto the Docker image? Explain.
+`Was it not just the "copy . ." command? And then the yarn installs its dependencies.`
+
 3. What do you think would happen if you forgot to add `CMD ["node", "src/index.js"]` in your Dockerfile? Why?
+`i think that it would still install everything just nicely but! there would be no way to easily command-line run starting a new container from this image. I don't know if there's some other clicking way to get to it.`
 
 ## 3. Updating Our App
 In this section, you learned that if you make a change to the code, you have to 
@@ -30,6 +37,7 @@ In this section, you learned that if you make a change to the code, you have to
 
 Answer the following:
 1. What are two ways you can delete a container?
+`with the command line (id, stop, and then remove the container) or just in the app.`
 
 ## 4. Sharing Our App (Optional)
 You don't have to complete this section, but I do want you to navigate to the Docker Image repository and take a look: [https://hub.docker.com/search?q=&type=image&image_filter=official](https://hub.docker.com/search?q=&type=image&image_filter=official). These are all of the potential Docker Images you can utilize to build your own containers (which will save you a lot of time)!
