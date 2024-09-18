@@ -45,13 +45,19 @@ You don't have to complete this section, but I do want you to navigate to the Do
 ## 5. Persisting our DB
 
 1. What is the difference between the `run` and the `exec` command?
+`run makes a new container and starts working with it. exec just takes an already running container and executes commands on it.`
+`this is also where my answers all deleted themselves and didn't save so this is my second time answering these, so I'm sorry if they're rushed`
 2. What does the `docker exec -it` command do, exactly. Try asking ChatGPT!
+`exec-s it and (according to the documentations), -i keeps STDIN open and going, and -t opens up a proxy terminal. basically it just opens a little terminal for you to run commands on the container.`
 3. What was the purpose of creating a volume?
+`it lets us keep all our data together and makes it possible to access the same data with different containers.`
 4. Optional: How does the TODO app code know to use the volume you just made? Hint: open `app/src/persistence/sqlite.js` and see if you can figure it out.
 
 ## 6. Using Bind Mounts
 1. Why are bind mounts useful? 
+`bind mounts keep our data (and more!) connected directly to our project. we ALWAYS know where it is. It can also hold other stuff, kinda like how you can import packages, but not the same at all. `
 2. Note that the commands below can also be represented in a Dockerfile (instead of in one big string of commands on the terminal). What are the advantages of using a Dockerfile?
+`number 1 Dockerfile advantage -> don't have to type everything out again/copy paste. You can run everything with one command and you know that you didn't mistype anything and that it's going to do exactly what you want.`
 
 ```
 docker run -dp 3000:3000 \
@@ -64,9 +70,11 @@ docker run -dp 3000:3000 \
 If you have never worked with network applications, this section may be confusing. That said, try to answer this question as best you can:
 
 1. If you have two containers running that are sandboxed (i.e., one container can't reach into another container and see its internal state or code), how did you get your two containers to communicate with one another? In other words, how was the web application container able to communicate with the database container?
+`two containers need to be on the same network to talk!! according to the tutorial, anyway. So the web application container was able to communicate with the database container because they're on the same network. `
 
 ## 8. Using Docker Compose
 1. What is the purpose of the `docker-compose.yml` file?
+`to me it seems to be very similar to a Makefile or a Dockerfile in that it keeps all the info you need to do something, like commands. however, it also stores definitions and the like for your containers. kind of like a script if it also told you what costumes everyone should get wears and what materials to build the set out of.`
 
 ## 9. Image Building Best Practices (Optional)
 Optional section. Only complete if you want to.
