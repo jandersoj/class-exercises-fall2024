@@ -15,7 +15,7 @@ export default function App() {
     const [courseList, setCourseList] = useState([]);
     const [user, setUser] = useState(null);
     const [schedule, setSchedule] = useState(null);
-    const username = "svanwart";
+    const username = "jander15";
 
     async function filterCourses(options) {
         const data = await fetchCourses(options);

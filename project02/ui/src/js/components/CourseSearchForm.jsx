@@ -12,7 +12,11 @@ import {
     Space,
 } from "antd";
 
+// I did end up asking ChatGPT about this task
+// gotta credit the computer, you know how it is
 export default function CourseSearchForm({ fetchCourses }) {
+    const [departments, setDepartments] = useState([]);
+
     const classificationOpts = [
         { key: "fys", value: "First Year Seminar" },
         { key: "di", value: "Diversity Intensive" },
@@ -28,6 +32,17 @@ export default function CourseSearchForm({ fetchCourses }) {
         // It was passed into this component as a prop.
         fetchCourses(formData);
     };
+
+    useEffect(() => {
+        async function fetchDepartments() {
+            const response = await fetch(
+                "http://127.0.0.1:8000/api/departments",
+            );
+            const data = await response.json();
+            setDepartments(data); // Update the state with the fetched departments
+        }
+        fetchDepartments();
+    }, []);
 
     return (
         <Form
@@ -73,18 +88,11 @@ export default function CourseSearchForm({ fetchCourses }) {
                         <Select>
                             <Select.Option value="">Any</Select.Option>
 
-                            {/* React Task 2:
-                                replace these hardcoded ones with ones 
-                                that are coming from the /api/departments endpoint. 
-                                You will need to use the useEffect and useState React 
-                                functions. 
-                            */}
-                            <Select.Option key="CSCI" value="CSCI">
-                                CSCI
-                            </Select.Option>
-                            <Select.Option key="NM" value="NM">
-                                NM
-                            </Select.Option>
+                                {departments.map((department) => (
+                                <Select.Option key={department} value={department}>
+                                    {department}
+                                </Select.Option>
+                            ))}
                         </Select>
                     </Form.Item>
 
