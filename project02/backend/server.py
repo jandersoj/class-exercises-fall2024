@@ -35,19 +35,30 @@ async def startup():
 # Task 1
 @app.get("/api/departments/", response_model=List[str])
 async def get_department_codes(db: AsyncSession = Depends(get_db)):
-    # replace with your code...
-    return []
+    result = await db.execute(
+        select(models.Course.department).distinct().order_by(models.Course.department)
+    )
+    departments = result.scalars().all()
+    return departments
 
 
 # Task 2
 # Note: replace response_model=object with response_model=User once you've got this working
-@app.get("/api/users/{username}", response_model=object)
+@app.get("/api/users/{username}", response_model=serializers.User)
 async def get_users_by_username(
     username: str, db: AsyncSession = Depends(get_db)
 ):
-    # replace with your code...
-    return {}
+    result = await db.execute(
+        select(models.User).where(models.User.username == username))
+    user = result.scalars().first()
 
+    return {
+        "id": user.id,
+        "username": user.username,
+        "email": user.email,
+        "first_name": user.first_name,
+        "last_name": user.last_name,
+    }
 
 # Task 3
 @app.get("/api/courses/", response_model=List[serializers.Course])
@@ -56,6 +67,12 @@ async def get_courses(
     instructor: str = Query(None),
     department: str = Query(None),
     hours: int = Query(None),
+    di: bool = Query(None),
+    di_r: bool = Query(None),
+    honors: bool = Query(None),
+    fys: bool = Query(None),
+    open_courses: bool = Query(None),
+    days: str = Query(None),
     db: AsyncSession = Depends(get_db),
 ):
 
@@ -87,9 +104,32 @@ async def get_courses(
             )
         )
 
+    # Special category filters
+    if di:
+        query = query.where(models.Course.diversity_intensive == True)
+
+    if di_r:
+        query = query.where(models.Course.diversity_intensive_r == True)
+
+    if honors:
+        query = query.where(models.Course.honors == True)
+
+    if fys:
+        query = query.where(models.Course.first_year_seminar == True)
+
+    # Open/closed filter
+    if open_courses:
+        query = query.where(models.Course.open == True)
+
+    # Days filter 
+    if days:
+        query = query.where(models.Course.days.ilike(f"%{days}%"))
+
+
     result = await db.execute(
         query.order_by(models.Course.department, models.Course.code)
     )
+    
     courses = result.scalars().all()
     return courses
 
